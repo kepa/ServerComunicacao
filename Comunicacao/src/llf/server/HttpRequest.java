@@ -5,14 +5,17 @@ import java.net.*;
 
 public final class HttpRequest implements Runnable {
 	
+	//Determinante do fim do pacote e corta a leitura
 	final static String CRLF = "\r\n";
+	//Socket criado da conxao com o cliente
 	Socket socket;
-
+	
+	//Construtor com o socket criado
 	public HttpRequest(Socket socket) throws Exception {
 		this.socket = socket;
 	}
 
-	
+	//Execucao do thread
 	public void run() {
 		try {
 			processRequest();
@@ -22,6 +25,7 @@ public final class HttpRequest implements Runnable {
 
 
 	}
+	
 	
 	private void processRequest() throws Exception {
 		
