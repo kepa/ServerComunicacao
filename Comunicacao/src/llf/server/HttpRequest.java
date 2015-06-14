@@ -30,20 +30,25 @@ public final class HttpRequest implements Runnable {
 	
 	private void processRequest() throws Exception {
 		
+		//Pegando os dados do request
 		InputStream input = socket.getInputStream();
+		
+		//Criando o canal de gravacao de dados
 		DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 		
+		//Leitor dos dados do header
 		BufferedReader read = new BufferedReader(new InputStreamReader(input));
 		String request = read.readLine();
 		
 		System.out.println();
+		//MOstrando no log qual é o request feito
 		System.out.println(request);
 		
-		//Pegar o nome do arquivo
+		//Pegar o nome do arquivo pulando os metodos, assumindo todos como GET
 		StringTokenizer tokens = new StringTokenizer(request);
-		tokens.nextToken();  
+		tokens.nextToken();  //Pulando metodo
 		String arquivo = tokens.nextToken();
-		arquivo = "." + arquivo;
+		arquivo = "." + arquivo; // Atribuindo a extensao do arquivo
 		
 		//Tratando caso nao haja arquivo nomeado
 		FileInputStream fis = null;
@@ -51,39 +56,42 @@ public final class HttpRequest implements Runnable {
 		try {
 			fis = new FileInputStream(arquivo);
 		} catch (FileNotFoundException e) {
+			//Valida a falta e retorna o arquvio 404
 			arquivoExiste = false;
+			fis = new FileInputStream("404.html");
 		}
 		
-		// Mensagem de resposta
+		// Mensagem de resposta, header e body 
 		String statusLine = null;
 		String contentTypeLine = null;
-		String entityBody = null;
 		
+		//Elaborando o header para a existencia ou nao do arquivo
 		if (arquivoExiste) {
-			statusLine = "HTTP-Version 1.0 Status-Code 200 SUCCESS";
+			//Passando a mensagem que foi encontrado
+			statusLine = "HTTP/1.0 200 OK\r\n";
+			//Definindo o tipo de arquivo devolvido
 			contentTypeLine = "Content-type: " +   contentType(arquivo) + CRLF;
 
 		}else {
-			statusLine = "HTTP-Version 1.0 Status-Code 404 NOT FOUND";
-			contentTypeLine = "text/html";
-			entityBody = "<HTML>" + 
-				"<HEAD><TITLE>Not Found</TITLE></HEAD>" +
-				"<BODY>Not Found</BODY></HTML>";
+			//Nao existindo o arquivo ele vai informar 404 e alterar o tipo 
+			statusLine = "HTTP/1.1 404 Not Found\r\n";
+			contentTypeLine = "Content-type: text/html";
 		}
+		//Resgstra no log qual resposta
+		System.out.println(statusLine);
 		
-		//Criando o header
+		//Criando o pacote
 		out.writeBytes(statusLine);
 		out.writeBytes(contentTypeLine);
+		//Linha de quebra
 		out.writeBytes(CRLF);
 
-		if(arquivoExiste){
-			sendBytes(fis, out);
-			fis.close();
-		}else {
-			out.writeBytes(entityBody);
-		}
+		//Adiciona arquivo ao body do pacote
+		sendBytes(fis, out);
+		fis.close();
 		
 		
+		//Termina todas as serializacoes
 		out.close();
 		read.close();
 		socket.close();
@@ -92,18 +100,19 @@ public final class HttpRequest implements Runnable {
 
 		
 	}
-
+	
+	//Metodo que escreve no buffer do pacote os dados
 	private static void sendBytes(FileInputStream fis, OutputStream os)  throws Exception {
-			   // Construct a 1K buffer to hold bytes on their way to the socket.
+			   
 			   byte[] buffer = new byte[1024];
 			   int bytes = 0;
 
-			   // Copy requested file into the socket's output stream.
 			   while((bytes = fis.read(buffer)) != -1 ) {
 			      os.write(buffer, 0, bytes);
 			   }
 			}
-
+	
+	//Metodo que retorna o tipo de arquivo baseando no seu nome
 	private static String contentType(String fileName){
 		if(fileName.endsWith(".htm") || fileName.endsWith(".html")) {
 			return "text/html";
