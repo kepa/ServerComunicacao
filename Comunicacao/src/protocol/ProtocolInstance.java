@@ -70,7 +70,7 @@ public class ProtocolInstance {
 		
 	}
 	
-	// called by app
+	// called by application
 	// returns total number of sent bytes 
 	public int sendData(byte[] buffer, int size) {
 		
@@ -86,7 +86,7 @@ public class ProtocolInstance {
 	
 	// called by app
 	// receive one segment at a time
-	// returns number of bytes copied in buf
+	// returns number of bytes copied in buffer
 	public int receivedData(byte[] buffer, int size) {
 		
 		//*****  complete
@@ -95,7 +95,7 @@ public class ProtocolInstance {
 		
 	}
 	
-	// called by app
+	// called by application
 	public void close() {
 		
 		//close the connection
@@ -104,13 +104,13 @@ public class ProtocolInstance {
 	
 	public int getMaximumBufferSize() {
 		
-		return this.MAXIMUM_BUFFER_SIZE;
+		return ProtocolInstance.MAXIMUM_BUFFER_SIZE;
 		
 	}
 	
 	public int getMaximumSegmentSize() {
 		
-		return this.MAXIMUM_SEGMENT_SIZE_BYTES;
+		return ProtocolInstance.MAXIMUM_SEGMENT_SIZE_BYTES;
 		
 	}
 

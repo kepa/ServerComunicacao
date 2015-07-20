@@ -37,9 +37,25 @@ public class ProcessingThread extends Thread {
 		
 	}
 	
+	
+	//TODO Check method
 	public void makeSegment(ProtocolSegment segment, byte[] payload) {
 		
+		segment.setSequenceNumber(Conversions.convertByteToInt(payload, ProtocolSegment.getSequenceNumberOffset()));
+		segment.setAckNumber(Conversions.convertByteToInt(payload, ProtocolSegment.getAckNumberOffset()));
+		segment.setFlags(Conversions.convertByteToInt(payload, ProtocolSegment.getFlagsOffset()));
+		segment.setChecksum(Conversions.convertByteToInt(payload, ProtocolSegment.getChecksumOffset()));
+		segment.setReceiverWindow(Conversions.convertByteToInt(payload, ProtocolSegment.getReceiverWindowOffset()));
 		
+		byte[] data = segment.getSegmentData();
+		
+		for (int i=0; i<segment.getSegmentLength(); i++) {
+			
+			data[i] = payload[i+ProtocolSegment.getHeaderSize()];
+			
+		}
+		
+		segment.setSegmentData(data);
 		
 	}
 	
