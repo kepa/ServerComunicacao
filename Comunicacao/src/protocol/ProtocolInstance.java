@@ -34,9 +34,8 @@ public class ProtocolInstance {
 			
 		}
 		
-		//pass MAXIMUM_BUFFER_SIZE as parameter when Buffer implemented
-		this.senderBuffer = new ProtocolBuffer();
-		this.receiverBuffer = new ProtocolBuffer();
+		this.senderBuffer = new ProtocolBuffer(ProtocolInstance.MAXIMUM_BUFFER_SIZE);
+		this.receiverBuffer = new ProtocolBuffer(ProtocolInstance.MAXIMUM_BUFFER_SIZE);
 		
 		ProcessingThread thread = new ProcessingThread(this.receiverBuffer, this.senderBuffer, this.socket, this.sourceIP, this.sourcePort, this);
 		thread.start();
@@ -60,10 +59,8 @@ public class ProtocolInstance {
 			
 		}
 		
-		
-		//pass senderBufferSize and receiverBufferSize as parameters when Buffer implemented
-		this.senderBuffer = new ProtocolBuffer();
-		this.receiverBuffer = new ProtocolBuffer();
+		this.senderBuffer = new ProtocolBuffer(ProtocolInstance.MAXIMUM_BUFFER_SIZE);
+		this.receiverBuffer = new ProtocolBuffer(ProtocolInstance.MAXIMUM_BUFFER_SIZE);
 		
 		ProcessingThread thread = new ProcessingThread(this.receiverBuffer, this.senderBuffer, this.socket, this.sourceIP, this.sourcePort, this);
 		thread.start();
