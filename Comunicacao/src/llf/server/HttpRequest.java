@@ -110,7 +110,7 @@ public final class HttpRequest implements Runnable {
 			   while((bytes = fis.read(buffer)) != -1 ) {
 			      os.write(buffer, 0, bytes);
 			   }
-			}
+	}
 	
 	//Metodo que retorna o tipo de arquivo baseando no seu nome
 	private static String contentType(String fileName){
