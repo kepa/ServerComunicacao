@@ -11,11 +11,13 @@ import java.util.zip.Checksum;
 
 public class Pacote implements Serializable{
 	
-	private InetAddress destino;
-	private InetAddress origem;
+	private int destino;
+	private int origem;
 	
 	private int numSequencia;
 	private int numACK;
+	private int flags;
+	private boolean ackRecebido;
 	
 	private long checksum;
 	private int larguraPacote;
@@ -24,7 +26,7 @@ public class Pacote implements Serializable{
 	
 	private int timer;
 
-	public Pacote(InetAddress destino,InetAddress origem,int numSequencia, int numACK, 
+	public Pacote(int destino,int origem,int numSequencia, int numACK, 
 			int larguraPacote, byte[] dados) {
 		
 		this.destino = destino;
@@ -49,6 +51,23 @@ public class Pacote implements Serializable{
 		
 	}
 	
+	public Pacote(){
+		 this.destino = 0;
+		 this.origem = 0;
+		
+		 this.numSequencia = 0;
+		 this.numACK = 0;
+		 this.flags = 0;
+		 this.ackRecebido = false;
+		
+		 this.checksum = 0;
+		 this.larguraPacote = 0;
+		
+		 this.dados = null;	
+		
+		 this.timer = 0;
+	}
+	
 	
 	public long getChecksum(){
 		return this.checksum;
@@ -58,19 +77,19 @@ public class Pacote implements Serializable{
 		return this.numACK;
 	}
 
-	public InetAddress getDestino() {
+	public int getDestino() {
 		return destino;
 	}
 
-	public void setDestino(InetAddress destino) {
+	public void setDestino(int destino) {
 		this.destino = destino;
 	}
 
-	public InetAddress getOrigem() {
+	public int getOrigem() {
 		return origem;
 	}
 
-	public void setOrigem(InetAddress origem) {
+	public void setOrigem(int origem) {
 		this.origem = origem;
 	}
 	
