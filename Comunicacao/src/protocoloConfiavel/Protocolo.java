@@ -41,18 +41,18 @@ public class Protocolo {
 	
 	public int sendData(byte[] buffer, int size) throws Exception{
 		
-		Pacote n = new Pacote(this.destinoIP, this.origemIP, 2 ,2, buffer.length, buffer);
+		//Pacote n = new Pacote(this.destinoIP., this.origemIP, 2 ,2, buffer.length, buffer);
 		
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		ObjectOutputStream out = null;
 		
 		out = new ObjectOutputStream(bos);   
-		out.writeObject(n);
+		//out.writeObject(n);
 		byte[] b = bos.toByteArray();
 		
-		DatagramPacket envio = new DatagramPacket(b, b.length, n.getDestino(), this.socket.getPort());
+		//DatagramPacket envio = new DatagramPacket(b, b.length, n.getDestino(), this.socket.getPort());
 		
-		this.socket.send(envio);
+		//this.socket.send(envio);
 		
 		return size;
 		
