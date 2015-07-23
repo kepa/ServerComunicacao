@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.InetAddress;
+import java.util.zip.CRC32;
+import java.util.zip.Checksum;
 
 
 
@@ -15,7 +17,7 @@ public class Pacote implements Serializable{
 	private int numSequencia;
 	private int numACK;
 	
-	private int checksum;
+	private long checksum;
 	private int larguraPacote;
 	
 	private byte[] dados;	
@@ -31,6 +33,11 @@ public class Pacote implements Serializable{
 		this.numACK = numACK;
 		this.larguraPacote = larguraPacote;
 		
+		//setting checksum
+		Checksum checksum = new CRC32();
+		checksum.update(dados, 0, dados.length);
+		this.checksum = checksum.getValue();
+		
 	}
 	
 	public Pacote(int numSequencia, int numACK, 
@@ -43,7 +50,7 @@ public class Pacote implements Serializable{
 	}
 	
 	
-	public int getChecksum(){
+	public long getChecksum(){
 		return this.checksum;
 	}
 	

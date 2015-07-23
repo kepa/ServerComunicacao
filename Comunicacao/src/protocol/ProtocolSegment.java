@@ -8,7 +8,7 @@ public class ProtocolSegment {
 	private static final int FLAGS_OFFSET = 8;
 	private static final int CHECKSUM_OFFSET = 12;
 	private static final int RECEIVER_WINDOW_OFFSET = 12;
-	private static final int SEGMENT_LENGHT_OFFSET = 20;
+	private static final int SEGMENT_LENGTH_OFFSET = 20;
 	private static final int HEADER_SIZE = 24;
 	
 	private int sequenceNumber;
@@ -35,7 +35,103 @@ public class ProtocolSegment {
 		
 	}
 	
-	//complete method
+	public void setSequenceNumber(int sequenceNumber) {
+		
+		this.sequenceNumber = sequenceNumber;
+		
+	}
+	
+	public static int getSequenceNumberOffset() {
+		
+		return SEQUENCE_NUMBER_OFFSET;
+		
+	}
+	
+	public void setAckNumber(int ackNumber) {
+		
+		this.ackNumber = ackNumber;
+		
+	}
+	
+	public static int getAckNumberOffset() {
+		
+		return ACK_NUMBER_OFFSET;
+		
+	}
+	
+	public void setFlags(int flags) {
+		
+		this.flags = flags;
+		
+	}
+	
+	public static int getFlagsOffset() {
+		
+		return FLAGS_OFFSET;
+		
+	}
+	
+	public void setChecksum(int checksum) {
+		
+		this.checksum = checksum;
+		
+	}
+	
+	public static int getChecksumOffset() {
+		
+		return CHECKSUM_OFFSET;
+		
+	}
+	
+	public void setReceiverWindow(int receiverWindow) {
+		
+		this.receiverWindow = receiverWindow;
+		
+	}
+	
+	public static int getReceiverWindowOffset() {
+		
+		return RECEIVER_WINDOW_OFFSET;
+		
+	}
+	
+	public void setSegmentLength(int segmentLength) {
+		
+		this.segmentLength = segmentLength;
+		
+	}
+	
+	public static int getSegmentLengthOffset() {
+		
+		return SEGMENT_LENGTH_OFFSET;
+		
+	}
+	
+	public static int getHeaderSize() {
+		
+		return HEADER_SIZE;
+		
+	}
+	
+	public int getSegmentLength() {
+		
+		return this.segmentLength;
+		
+	}
+	
+	public byte[] getSegmentData() {
+		
+		return this.segmentData;
+		
+	}
+	
+	public void setSegmentData(byte[] segmentData) {
+		
+		this.segmentData = segmentData;
+		
+	}
+	
+ 	//complete method
 	public int checkSum() {
 		
 		//TODO
@@ -59,10 +155,21 @@ public class ProtocolSegment {
 		
 	}
 	
+	//TODO check this method, is not return nor setting anything
 	public void makePayload(byte[] payload) {
 		
-		//TODO
-		//finish implementation
+		Conversions.convertIntToByte(this.sequenceNumber, payload, ProtocolSegment.SEQUENCE_NUMBER_OFFSET);
+		Conversions.convertIntToByte(this.ackNumber, payload, ProtocolSegment.ACK_NUMBER_OFFSET);
+		Conversions.convertIntToByte(this.flags, payload, ProtocolSegment.FLAGS_OFFSET);
+		Conversions.convertIntToByte(this.checksum, payload, ProtocolSegment.CHECKSUM_OFFSET);
+		Conversions.convertIntToByte(this.receiverWindow, payload, ProtocolSegment.RECEIVER_WINDOW_OFFSET);
+		Conversions.convertIntToByte(this.segmentLength, payload, ProtocolSegment.SEGMENT_LENGTH_OFFSET);
+		
+		for (int i = 0; i<this.segmentLength; i++) {
+			
+			payload[i+ProtocolSegment.HEADER_SIZE] = this.segmentData[i];
+			
+		}
 		
 	}
 	
